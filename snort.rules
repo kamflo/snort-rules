@@ -1,0 +1,13 @@
+#akses icmp/ping
+alert icmp any any -> $HOME_NET any (msg:"akses icmp"; sid:10000001; rev:001;)
+#akses http/web
+alert tcp any any -> $HOME_NET 80 (msg:"http test"; sid:1000002;)
+#akses ssh/remote
+alert tcp any any -> $HOME_NET 22 (msg:"ssh test"; sid:1000003;)
+#scan port
+alert tcp any any -> $HOME_NET any (msg:"FIN Scan"; flags: F; sid:1000001;)
+alert tcp any any -> $HOME_NET any (msg:"NULL Scan"; flags: 0;sid:1000002;)
+alert tcp any any -> $HOME_NET any (msg:"SYN attack"; flags:S,12;sid:1000003;)
+alert tcp any any -> $HOME_NET any (msg:"XMUS attack"; flags:FPU; sid:1000004;)
+#bruteforce ssh
+alert tcp any any -> $HOME_NET 22 (msg: "BRUTEFORCE SSH"; flags: S; flowbits: set,ssh.brute.attempt; threshold: type threshold, track by_src, count 5, seconds 120; classtype: attempted-recon; sid: 2003068; rev:2;)
